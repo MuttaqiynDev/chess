@@ -204,16 +204,9 @@ We welcome contributions! Here's how you can help:
 
 ---
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
 ## 🙏 Acknowledgments
 
 - ♟️ Chess piece designs from Wikimedia Commons
-- 🎨 Modern UI inspiration from chess.com
 - 🧠 AI algorithms based on classical chess programming techniques
 - 💡 Community feedback and suggestions
 
