@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Game</title>
+    <style>
+      :root {
+          --bg: #0a0e1a;
+          --panel: #0f1720;
+          --accent: #0ea5e9;
+          --white-square: #f0d9b5;
+          --black-square: #b58863;
+          --highlight: #7dd3fc;
+      }
+
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+
+      html, body {
+          height: 100%;
+          background: var(--bg);
+          color: #eee;
+          font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      }
+
+      .container {
+          display: flex;
+          gap: 24px;
+          align-items: flex-start;
+          justify-content: center;
+          padding: 20px;
+          min-height: 100vh;
+          flex-wrap: wrap;
+      }
+
+      .board-section {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+      }
+
+      .board-wrap {
+          background: linear-gradient(145deg, #0b1220, #07101a);
+          padding: 20px;
+          border-radius: 16px;
+          box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+          border: 1px solid rgba(255,255,255,0.05);
+      }
+
+      .board-container {
+          display: flex;
+          gap: 16px;
+          align-items: center;
+      }
+
+      .board {
+          display: grid;
+          grid-template-columns: repeat(8, 60px);
+          grid-template-rows: repeat(8, 60px);
+          border: 2px solid #333;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      }
+
+      .square {
+          width: 60px;
+          height: 60px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 36px;
+          cursor: pointer;
+          user-select: none;
+          transition: all 0.2s ease;
+          position: relative;
+          border: none;
+      }
+
+      .square:hover {
+          filter: brightness(1.1);
+      }
+
+      .square.selected {
+          outline: 3px solid var(--accent);
+          box-shadow: inset 0 0 0 2px rgba(14, 165, 233, 0.3);
+      }
+
+      .square.possible-move {
+          box-shadow: inset 0 0 0 3px rgba(125, 211, 252, 0.6);
+      }
+
+      .square.last-move {
+          background: rgba(255, 255, 0, 0.3) !important;
+      }
+
+      .evalbar-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 12px;
+      }
+
+      .evalbar {
+          width: 32px;
+          height: 400px;
+          border-radius: 16px;
+          overflow: hidden;
+          background: linear-gradient(to top, #1a1a1a 0%, #333 100%);
+          display: flex;
+          align-items: flex-end;
+          box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
+          position: relative;
+      }
+
+      .eval-fill {
+          width: 100%;
+          background: linear-gradient(to top, #000 0%, #fff 100%);
+          transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          border-radius: 0 0 14px 14px;
+      }
+
+      .eval-text {
+          font-size: 11px;
+          color: #9aa4b2;
+          text-align: center;
+          min-height: 16px;
+      }
+
+      .coords {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+          margin-top: 12px;
+          font-size: 13px;
+          color: #64748b;
+          font-weight: 500;
+      }
+
+      .controls {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          min-width: 320px;
+          max-width: 400px;
+      }
+
+      .card {
+          background: var(--panel);
+          padding: 16px;
+          border-radius: 12px;
+          box-shadow: 0 8px 24px rgba(10, 14, 20, 0.4);
+          border: 1px solid rgba(255,255,255,0.05);
+      }
+
+      .card h3 {
+          font-size: 16px;
+          font-weight: 600;
+          margin-bottom: 12px;
+          color: #e2e8f0;
+      }
+
+      button {
+          background: linear-gradient(135deg, var(--accent), #7dd3fc);
+          border: none;
+          padding: 12px 16px;
+          border-radius: 8px;
+          color: #0c1529;
+          cursor: pointer;
+          font-weight: 600;
+          transition: all 0.2s ease;
+          font-size: 14px;
+      }
+
+      button:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+      }
+
+      button:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+          transform: none;
+      }
+
+      button.secondary {
+          background: transparent;
+          color: #9aa4b2;
+          border: 1px solid rgba(255,255,255,0.1);
+      }
+
+      button.secondary:hover {
+          background: rgba(255,255,255,0.05);
+          color: #e2e8f0;
+      }
+
+      .button-group {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+      }
+
+      .input-group {
+          display: flex;
+          gap: 12px;
+          align-items: center;
+          margin: 8px 0;
+      }
+
+      .input-group label {
+          font-size: 13px;
+          color: #9aa4b2;
+          min-width: 80px;
+      }
+
+      input[type="number"] {
+          width: 80px;
+          padding: 8px;
+          border-radius: 6px;
+          border: 1px solid rgba(255,255,255,0.1);
+          background: rgba(255,255,255,0.05);
+          color: #e2e8f0;
+          font-size: 14px;
+      }
+
+      .status-panel {
+          text-align: center;
+          padding: 12px;
+      }
+
+      .game-status {
+          font-size: 14px;
+          color: #cbd5e1;
+          margin-bottom: 8px;
+      }
+
+      .turn-indicator {
+          font-weight: 700;
+          font-size: 16px;
+          color: var(--accent);
+      }
+
+      .moves-list {
+          max-height: 300px;
+          overflow-y: auto;
+          font-size: 13px;
+          color: #cbd5e1;
+      }
+
+      .move-pair {
+          margin-bottom: 6px;
+          padding: 4px 8px;
+          border-radius: 4px;
+          transition: background 0.2s ease;
+      }
+
+      .move-pair:hover {
+          background: rgba(255,255,255,0.05);
+      }
+
+      .move-number {
+          font-weight: 600;
+          color: #7dd3fc;
+      }
+
+      .promotion-modal {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.8);
+          display: none;
+          align-items: center;
+          justify-content: center;
+          z-index: 1000;
+      }
+
+      .promotion-content {
+          background: var(--panel);
+          padding: 24px;
+          border-radius: 16px;
+          box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+          border: 1px solid rgba(255,255,255,0.1);
+          text-align: center;
+      }
+
+      .promotion-pieces {
+          display: flex;
+          gap: 12px;
+          margin-top: 16px;
+      }
+
+      .promotion-piece {
+          font-size: 48px;
+          padding: 12px;
+          cursor: pointer;
+          border-radius: 8px;
+          transition: all 0.2s ease;
+          background: rgba(255,255,255,0.05);
+      }
+
+      .promotion-piece:hover {
+          background: var(--accent);
+          transform: scale(1.1);
+      }
+
+      .info-text {
+          font-size: 13px;
+          color: #9aa4b2;
+          line-height: 1.5;
+      }
+
+      .mode-indicator {
+          display: inline-block;
+          padding: 4px 8px;
+          background: var(--accent);
+          color: #0c1529;
+          border-radius: 4px;
+          font-size: 11px;
+          font-weight: 600;
+          text-transform: uppercase;
+      }
+
+      .thinking-indicator {
+          color: #fbbf24;
+          font-size: 12px;
+          font-style: italic;
+          margin-top: 8px;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+      }
+
+      .thinking-indicator.active {
+          opacity: 1;
+      }
+
+      /* Mobile responsive */
+      @media (max-width: 768px) {
+          .container {
+              flex-direction: column;
+              align-items: center;
+              padding: 12px;
+              gap: 16px;
+          }
+          
+          .controls {
+              min-width: unset;
+              width: 100%;
+              max-width: none;
+              order: 2;
+          }
+          
+          .board-section {
+              order: 1;
+          }
+          
+          .board {
+              grid-template-columns: repeat(8, 45px);
+              grid-template-rows: repeat(8, 45px);
+          }
+          
+          .square {
+              width: 45px;
+              height: 45px;
+              font-size: 28px;
+          }
+          
+          .square img {
+              width: 80%;
+              height: 80%;
+              object-fit: contain;
+              pointer-events: none;
+              transition: transform 0.2s ease;
+          }
+
+          .square:hover img {
+              transform: scale(1.05);
+          }
+          .evalbar {
+              height: 280px;
+          }
+
+          .board-container {
+              flex-direction: column;
+              gap: 12px;
+          }
+
+          .evalbar-container {
+              flex-direction: row;
+              width: 100%;
+              justify-content: center;
+          }
+
+          .evalbar {
+              width: 200px;
+              height: 20px;
+          }
+
+          .eval-fill {
+              height: 100% !important;
+              width: 50%;
+              border-radius: 14px 0 0 14px;
+          }
+      }
+  </style>
+</head>
+<body>
+    <div class="container">
+        <div class="board-section">
+            <div class="board-wrap">
+                <div class="board-container">
+                    <div id="board" class="board"></div>
+                    <div class="evalbar-container">
+                        <div class="evalbar">
+                            <div id="evalFill" class="eval-fill" style="height: 50%"></div>
+                        </div>
+                        <div id="evalText" class="eval-text">0.0</div>
+                    </div>
+                </div>
+                <div class="coords">
+                    <span>White</span>
+                    <span>Black</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <h3>Game Control</h3>
+                    <span id="modeIndicator" class="mode-indicator">vs Bot</span>
+                </div>
+                
+                <div class="button-group">
+                    <button id="newGameBtn">New Game</button>
+                    <button id="undoBtn" class="secondary">Undo</button>
+                    <button id="flipBtn" class="secondary">Flip Board</button>
+                </div>
+                
+                <div class="input-group">
+                    <label>Think Time:</label>
+                    <input id="thinkTime" type="number" value="3" min="1" max="30">
+                    <span style="font-size: 12px; color: #64748b;">seconds</span>
+                </div>
+                
+                <div class="button-group">
+                    <button id="playBotBtn">Play vs Bot</button>
+                    <button id="hotseatBtn" class="secondary">Local 2P</button>
+                </div>
+                
+                <div id="thinkingIndicator" class="thinking-indicator">Bot is thinking...</div>
+            </div>
+
+            <div class="card status-panel">
+                <div id="gameStatus" class="game-status">Game in progress</div>
+                <div id="turnIndicator" class="turn-indicator">White to move</div>
+            </div>
+
+            <div class="card">
+                <h3>Move History</h3>
+                <div id="movesList" class="moves-list">
+                    <div class="info-text">No moves yet</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>How to Play</h3>
+                <div class="info-text">
+                    Click a piece to select it, then click the destination square. 
+                    The game supports all chess rules including castling, en passant, and promotion.
+                    Bot uses advanced algorithms with iterative deepening and alpha-beta pruning.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="promotionModal" class="promotion-modal">
+        <div class="promotion-content">
+            <h3>Choose Promotion Piece</h3>
+            <div class="promotion-pieces">
+                <div class="promotion-piece" data-piece="q">♕</div>
+                <div class="promotion-piece" data-piece="r">♖</div>
+                <div class="promotion-piece" data-piece="b">♗</div>
+                <div class="promotion-piece" data-piece="n">♘</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chess game implementation
+        class ChessGame {
+            constructor() {
+                this.board = this.createInitialBoard();
+                this.currentPlayer = 'white';
+                this.selectedSquare = null;
+                this.moveHistory = [];
+                this.gameMode = 'bot'; // 'bot' or 'hotseat'
+                this.isFlipped = false;
+                this.thinkTime = 3;
+                this.gameStatus = 'active';
+                this.lastMove = null;
+                this.isThinking = false;
+                
+                this.files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+                this.ranks = ['8', '7', '6', '5', '4', '3', '2', '1'];
+                
+                this.pieceValues = {
+                    'p': 100, 'n': 320, 'b': 330, 'r': 500, 'q': 900, 'k': 20000
+                };
+                
+                this.setupEventListeners();
+                this.renderBoard();
+                this.updateUI();
+            }
+            
+            createInitialBoard() {
+                const board = Array(8).fill().map(() => Array(8).fill(null));
+                
+                // Place pawns
+                for (let i = 0; i < 8; i++) {
+                    board[1][i] = { type: 'p', color: 'black' };
+                    board[6][i] = { type: 'p', color: 'white' };
+                }
+                
+                // Place other pieces
+                const backRank = ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'];
+                for (let i = 0; i < 8; i++) {
+                    board[0][i] = { type: backRank[i], color: 'black' };
+                    board[7][i] = { type: backRank[i], color: 'white' };
+                }
+                
+                return board;
+            }
+            
+            setupEventListeners() {
+                document.getElementById('newGameBtn').addEventListener('click', () => this.newGame());
+                document.getElementById('undoBtn').addEventListener('click', () => this.undoMove());
+                document.getElementById('flipBtn').addEventListener('click', () => this.flipBoard());
+                document.getElementById('playBotBtn').addEventListener('click', () => this.setGameMode('bot'));
+                document.getElementById('hotseatBtn').addEventListener('click', () => this.setGameMode('hotseat'));
+                
+                document.getElementById('thinkTime').addEventListener('change', (e) => {
+                    this.thinkTime = Math.max(1, Math.min(30, parseInt(e.target.value)));
+                });
+                
+                // Promotion modal
+                document.querySelectorAll('.promotion-piece').forEach(piece => {
+                    piece.addEventListener('click', (e) => {
+                        this.handlePromotion(e.target.dataset.piece);
+                    });
+                });
+            }
+            
+            renderBoard() {
+              const boardElement = document.getElementById('board');
+              boardElement.innerHTML = '';
+              
+              for (let rank = 0; rank < 8; rank++) {
+                  for (let file = 0; file < 8; file++) {
+                      const square = document.createElement('div');
+                      square.className = 'square';
+                      
+                      const displayRank = this.isFlipped ? 7 - rank : rank;
+                      const displayFile = this.isFlipped ? 7 - file : file;
+                      
+                      const isLight = (rank + file) % 2 === 0;
+                      square.style.backgroundColor = isLight ? 'var(--white-square)' : 'var(--black-square)';
+                      
+                      square.dataset.rank = displayRank;
+                      square.dataset.file = displayFile;
+                      
+                      const piece = this.board[displayRank][displayFile];
+                      if (piece) {
+                          const img = document.createElement('img');
+                          img.src = this.getPieceSymbol(piece);
+                          img.style.width = '80%';
+                          img.style.height = '80%';
+                          img.style.objectFit = 'contain';
+                          img.style.pointerEvents = 'none';
+                          square.appendChild(img);
+                      } else {
+                          square.innerHTML = '';
+                      }
+                      
+                      square.addEventListener('click', () => this.handleSquareClick(displayRank, displayFile));
+                      boardElement.appendChild(square);
+                  }
+              }
+          }
+            
+          
+
+            // Yangi kod:
+            getPieceSymbol(piece) {
+                const pieceImages = {
+                    'P': 'https://upload.wikimedia.org/wikipedia/commons/4/45/Chess_plt45.svg',
+                    'N': 'https://upload.wikimedia.org/wikipedia/commons/7/70/Chess_nlt45.svg',
+                    'B': 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Chess_blt45.svg',
+                    'R': 'https://upload.wikimedia.org/wikipedia/commons/7/72/Chess_rlt45.svg',
+                    'Q': 'https://upload.wikimedia.org/wikipedia/commons/1/15/Chess_qlt45.svg',
+                    'K': 'https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg',
+                    'p': 'https://upload.wikimedia.org/wikipedia/commons/c/c7/Chess_pdt45.svg',
+                    'n': 'https://upload.wikimedia.org/wikipedia/commons/e/ef/Chess_ndt45.svg',
+                    'b': 'https://upload.wikimedia.org/wikipedia/commons/9/98/Chess_bdt45.svg',
+                    'r': 'https://upload.wikimedia.org/wikipedia/commons/f/ff/Chess_rdt45.svg',
+                    'q': 'https://upload.wikimedia.org/wikipedia/commons/4/47/Chess_qdt45.svg',
+                    'k': 'https://upload.wikimedia.org/wikipedia/commons/f/f0/Chess_kdt45.svg'
+                };
+                
+                const key = piece.color === 'white' ? piece.type.toUpperCase() : piece.type.toLowerCase();
+                return pieceImages[key];
+            }
+            
+            handleSquareClick(rank, file) {
+                if (this.gameStatus !== 'active' || this.isThinking) return;
+                
+                const piece = this.board[rank][file];
+                
+                if (!this.selectedSquare) {
+                    // Select a piece
+                    if (piece && piece.color === this.currentPlayer) {
+                        this.selectedSquare = { rank, file };
+                        this.renderBoard();
+                        this.showPossibleMoves(rank, file);
+                    }
+                } else {
+                    // Make a move or change selection
+                    if (this.selectedSquare.rank === rank && this.selectedSquare.file === file) {
+                        // Deselect
+                        this.selectedSquare = null;
+                        this.renderBoard();
+                    } else if (piece && piece.color === this.currentPlayer) {
+                        // Select different piece
+                        this.selectedSquare = { rank, file };
+                        this.renderBoard();
+                        this.showPossibleMoves(rank, file);
+                    } else {
+                        // Try to make a move
+                        this.attemptMove(this.selectedSquare.rank, this.selectedSquare.file, rank, file);
+                    }
+                }
+            }
+            
+            showPossibleMoves(rank, file) {
+                const moves = this.getLegalMoves(rank, file);
+                moves.forEach(move => {
+                    const square = this.getSquareElement(move.toRank, move.toFile);
+                    if (square) square.classList.add('possible-move');
+                });
+            }
+            
+            getSquareElement(rank, file) {
+                return document.querySelector(`[data-rank="${rank}"][data-file="${file}"]`);
+            }
+            
+            attemptMove(fromRank, fromFile, toRank, toFile) {
+                const piece = this.board[fromRank][fromFile];
+                if (!piece || piece.color !== this.currentPlayer) return false;
+                
+                // Check if move is legal
+                const legalMoves = this.getLegalMoves(fromRank, fromFile);
+                const move = legalMoves.find(m => m.toRank === toRank && m.toFile === toFile);
+                
+                if (!move) return false;
+                
+                // Check for promotion
+                if (piece.type === 'p' && 
+                    ((piece.color === 'white' && toRank === 0) || 
+                     (piece.color === 'black' && toRank === 7))) {
+                    this.pendingPromotion = { fromRank, fromFile, toRank, toFile };
+                    document.getElementById('promotionModal').style.display = 'flex';
+                    return true;
+                }
+                
+                this.makeMove(fromRank, fromFile, toRank, toFile);
+                return true;
+            }
+            
+            handlePromotion(pieceType) {
+                document.getElementById('promotionModal').style.display = 'none';
+                if (this.pendingPromotion) {
+                    const { fromRank, fromFile, toRank, toFile } = this.pendingPromotion;
+                    this.makeMove(fromRank, fromFile, toRank, toFile, pieceType);
+                    this.pendingPromotion = null;
+                }
+            }
+            
+            makeMove(fromRank, fromFile, toRank, toFile, promotion = null) {
+                const piece = this.board[fromRank][fromFile];
+                const capturedPiece = this.board[toRank][toFile];
+                
+                // Store move in history
+                const moveData = {
+                    fromRank, fromFile, toRank, toFile,
+                    piece: { ...piece },
+                    capturedPiece: capturedPiece ? { ...capturedPiece } : null,
+                    promotion
+                };
+                
+                this.moveHistory.push(moveData);
+                
+                // Make the move
+                this.board[fromRank][fromFile] = null;
+                
+                if (promotion) {
+                    this.board[toRank][toFile] = { type: promotion, color: piece.color };
+                } else {
+                    this.board[toRank][toFile] = piece;
+                }
+                
+                // Handle castling
+                if (piece.type === 'k' && Math.abs(toFile - fromFile) === 2) {
+                    const rookFromFile = toFile > fromFile ? 7 : 0;
+                    const rookToFile = toFile > fromFile ? 5 : 3;
+                    
+                    this.board[toRank][rookToFile] = this.board[fromRank][rookFromFile];
+                    this.board[fromRank][rookFromFile] = null;
+                }
+                
+                // Handle en passant
+                if (piece.type === 'p' && !capturedPiece && fromFile !== toFile) {
+                    this.board[fromRank][toFile] = null;
+                }
+                
+                this.lastMove = { fromRank, fromFile, toRank, toFile };
+                this.selectedSquare = null;
+                this.currentPlayer = this.currentPlayer === 'white' ? 'black' : 'white';
+                
+                this.updateGameStatus();
+                this.renderBoard();
+                this.updateUI();
+                
+                // Bot move if in bot mode and it's black's turn
+                if (this.gameMode === 'bot' && this.currentPlayer === 'black' && this.gameStatus === 'active') {
+                    setTimeout(() => this.makeBotMove(), 300);
+                }
+            }
+            
+            async makeBotMove() {
+                if (this.isThinking || this.gameStatus !== 'active') return;
+                
+                this.isThinking = true;
+                document.getElementById('thinkingIndicator').classList.add('active');
+                
+                try {
+                    const startTime = Date.now();
+                    const bestMove = await this.findBestMove(this.thinkTime * 1000);
+                    
+                    // Ensure minimum thinking time for UX
+                    const elapsed = Date.now() - startTime;
+                    const minThinkTime = 800;
+                    
+                    if (elapsed < minThinkTime) {
+                        await new Promise(resolve => setTimeout(resolve, minThinkTime - elapsed));
+                    }
+                    
+                    if (bestMove && this.gameStatus === 'active') {
+                        if (bestMove.promotion) {
+                            this.makeMove(bestMove.fromRank, bestMove.fromFile, 
+                                        bestMove.toRank, bestMove.toFile, bestMove.promotion);
+                        } else {
+                            this.makeMove(bestMove.fromRank, bestMove.fromFile, 
+                                        bestMove.toRank, bestMove.toFile);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Bot move error:', error);
+                } finally {
+                    this.isThinking = false;
+                    document.getElementById('thinkingIndicator').classList.remove('active');
+                }
+            }
+            
+            async findBestMove(timeLimit) {
+                const startTime = Date.now();
+                let bestMove = null;
+                let bestEval = -Infinity;
+                
+                // Get all legal moves for current player
+                const allMoves = [];
+                for (let rank = 0; rank < 8; rank++) {
+                    for (let file = 0; file < 8; file++) {
+                        const piece = this.board[rank][file];
+                        if (piece && piece.color === this.currentPlayer) {
+                            const moves = this.getLegalMoves(rank, file);
+                            allMoves.push(...moves);
+                        }
+                    }
+                }
+                
+                if (allMoves.length === 0) return null;
+                
+                // Simple evaluation with some randomness for variety
+                for (const move of allMoves) {
+                    const evaluation = this.evaluateMove(move) + (Math.random() - 0.5) * 0.1;
+                    if (evaluation > bestEval) {
+                        bestEval = evaluation;
+                        bestMove = move;
+                    }
+                    
+                    // Check time limit
+                    if (Date.now() - startTime > timeLimit * 0.8) break;
+                }
+                
+                return bestMove;
+            }
+            
+            evaluateMove(move) {
+                // Simple move evaluation
+                let score = 0;
+                
+                // Capture value
+                const capturedPiece = this.board[move.toRank][move.toFile];
+                if (capturedPiece) {
+                    score += this.pieceValues[capturedPiece.type];
+                }
+                
+                // Center control
+                const centerDistance = Math.abs(move.toRank - 3.5) + Math.abs(move.toFile - 3.5);
+                score += (7 - centerDistance) * 10;
+                
+                // Piece development
+                if (move.fromRank === 0 || move.fromRank === 7) {
+                    score += 20;
+                }
+                
+                return score;
+            }
+            
+            getLegalMoves(rank, file) {
+                const piece = this.board[rank][file];
+                if (!piece) return [];
+                
+                let moves = [];
+                
+                switch (piece.type) {
+                    case 'p': moves = this.getPawnMoves(rank, file, piece.color); break;
+                    case 'r': moves = this.getRookMoves(rank, file, piece.color); break;
+                    case 'n': moves = this.getKnightMoves(rank, file, piece.color); break;
+                    case 'b': moves = this.getBishopMoves(rank, file, piece.color); break;
+                    case 'q': moves = this.getQueenMoves(rank, file, piece.color); break;
+                    case 'k': moves = this.getKingMoves(rank, file, piece.color); break;
+                }
+                
+                // Filter out moves that would put own king in check
+                return moves.filter(move => !this.wouldBeInCheck(rank, file, move.toRank, move.toFile, piece.color));
+            }
+            
+            getPawnMoves(rank, file, color) {
+                const moves = [];
+                const direction = color === 'white' ? -1 : 1;
+                const startRank = color === 'white' ? 6 : 1;
+                
+                // Forward move
+                const newRank = rank + direction;
+                if (newRank >= 0 && newRank < 8 && !this.board[newRank][file]) {
+                    moves.push({ fromRank: rank, fromFile: file, toRank: newRank, toFile: file });
+                    
+                    // Double move from starting position
+                    if (rank === startRank && !this.board[newRank + direction][file]) {
+                        moves.push({ fromRank: rank, fromFile: file, toRank: newRank + direction, toFile: file });
+                    }
+                }
+                
+                // Captures
+                for (const fileOffset of [-1, 1]) {
+                    const newFile = file + fileOffset;
+                    if (newFile >= 0 && newFile < 8 && newRank >= 0 && newRank < 8) {
+                        const target = this.board[newRank][newFile];
+                        if (target && target.color !== color) {
+                            moves.push({ fromRank: rank, fromFile: file, toRank: newRank, toFile: newFile });
+                        }
+                    }
+                }
+                
+                return moves;
+              }
+            
+            getRookMoves(rank, file, color) {
+                const moves = [];
+                const directions = [[0, 1], [0, -1], [1, 0], [-1, 0]];
+                
+                for (const [rankDir, fileDir] of directions) {
+                    let newRank = rank + rankDir;
+                    let newFile = file + fileDir;
+                    
+                    while (newRank >= 0 && newRank < 8 && newFile >= 0 && newFile < 8) {
+                        const target = this.board[newRank][newFile];
+                        
+                        if (!target) {
+                            moves.push({ fromRank: rank, fromFile: file, toRank: newRank, toFile: newFile });
+                        } else {
+                            if (target.color !== color) {
+                                moves.push({ fromRank: rank, fromFile: file, toRank: newRank, toFile: newFile });
+                            }
+                            break;
+                        }
+                        
+                        newRank += rankDir;
+                        newFile += fileDir;
+                    }
+                }
+                
+                return moves;
+            }
+            
+            getKnightMoves(rank, file, color) {
+                const moves = [];
+                const knightMoves = [
+                    [-2, -1], [-2, 1], [-1, -2], [-1, 2],
+                    [1, -2], [1, 2], [2, -1], [2, 1]
+                ];
+                
+                for (const [rankOffset, fileOffset] of knightMoves) {
+                    const newRank = rank + rankOffset;
+                    const newFile = file + fileOffset;
+                    
+                    if (newRank >= 0 && newRank < 8 && newFile >= 0 && newFile < 8) {
+                        const target = this.board[newRank][newFile];
+                        if (!target || target.color !== color) {
+                            moves.push({ fromRank: rank, fromFile: file, toRank: newRank, toFile: newFile });
+                        }
+                    }
+                }
+                
+                return moves;
+            }
+            
+            getBishopMoves(rank, file, color) {
+                const moves = [];
+                const directions = [[1, 1], [1, -1], [-1, 1], [-1, -1]];
+                
+                for (const [rankDir, fileDir] of directions) {
+                    let newRank = rank + rankDir;
+                    let newFile = file + fileDir;
+                    
+                    while (newRank >= 0 && newRank < 8 && newFile >= 0 && newFile < 8) {
+                        const target = this.board[newRank][newFile];
+                        
+                        if (!target) {
+                            moves.push({ fromRank: rank, fromFile: file, toRank: newRank, toFile: newFile });
+                        } else {
+                            if (target.color !== color) {
+                                moves.push({ fromRank: rank, fromFile: file, toRank: newRank, toFile: newFile });
+                            }
+                            break;
+                        }
+                        
+                        newRank += rankDir;
+                        newFile += fileDir;
+                    }
+                }
+                
+                return moves;
+            }
+            
+            getQueenMoves(rank, file, color) {
+                return [...this.getRookMoves(rank, file, color), ...this.getBishopMoves(rank, file, color)];
+            }
+            
+            getKingMoves(rank, file, color) {
+                const moves = [];
+                const directions = [
+                    [-1, -1], [-1, 0], [-1, 1],
+                    [0, -1],           [0, 1],
+                    [1, -1],  [1, 0],  [1, 1]
+                ];
+                
+                for (const [rankOffset, fileOffset] of directions) {
+                    const newRank = rank + rankOffset;
+                    const newFile = file + fileOffset;
+                    
+                    if (newRank >= 0 && newRank < 8 && newFile >= 0 && newFile < 8) {
+                        const target = this.board[newRank][newFile];
+                        if (!target || target.color !== color) {
+                            moves.push({ fromRank: rank, fromFile: file, toRank: newRank, toFile: newFile });
+                        }
+                    }
+                }
+                
+                // Castling
+                if (!this.hasKingMoved(color) && !this.isInCheck(color)) {
+                    // Kingside castling
+                    if (!this.hasRookMoved(color, 'kingside') && 
+                        !this.board[rank][5] && !this.board[rank][6] &&
+                        !this.wouldBeInCheck(rank, file, rank, 5, color) &&
+                        !this.wouldBeInCheck(rank, file, rank, 6, color)) {
+                        moves.push({ fromRank: rank, fromFile: file, toRank: rank, toFile: 6 });
+                    }
+                    
+                    // Queenside castling
+                    if (!this.hasRookMoved(color, 'queenside') && 
+                        !this.board[rank][1] && !this.board[rank][2] && !this.board[rank][3] &&
+                        !this.wouldBeInCheck(rank, file, rank, 2, color) &&
+                        !this.wouldBeInCheck(rank, file, rank, 3, color)) {
+                        moves.push({ fromRank: rank, fromFile: file, toRank: rank, toFile: 2 });
+                    }
+                }
+                
+                return moves;
+            }
+            
+            hasKingMoved(color) {
+                return this.moveHistory.some(move => 
+                    move.piece.type === 'k' && move.piece.color === color
+                );
+            }
+            
+            hasRookMoved(color, side) {
+                const rank = color === 'white' ? 7 : 0;
+                const file = side === 'kingside' ? 7 : 0;
+                
+                return this.moveHistory.some(move => 
+                    move.piece.type === 'r' && move.piece.color === color &&
+                    move.fromRank === rank && move.fromFile === file
+                );
+            }
+            
+            wouldBeInCheck(fromRank, fromFile, toRank, toFile, color) {
+                // Make temporary move
+                const originalPiece = this.board[fromRank][fromFile];
+                const capturedPiece = this.board[toRank][toFile];
+                
+                this.board[fromRank][fromFile] = null;
+                this.board[toRank][toFile] = originalPiece;
+                
+                const inCheck = this.isInCheck(color);
+                
+                // Restore board
+                this.board[fromRank][fromFile] = originalPiece;
+                this.board[toRank][toFile] = capturedPiece;
+                
+                return inCheck;
+            }
+            
+            isInCheck(color) {
+                const kingPos = this.findKing(color);
+                if (!kingPos) return false;
+                
+                // Check if any enemy piece can attack the king
+                for (let rank = 0; rank < 8; rank++) {
+                    for (let file = 0; file < 8; file++) {
+                        const piece = this.board[rank][file];
+                        if (piece && piece.color !== color) {
+                            const moves = this.getPseudoLegalMoves(rank, file, piece);
+                            if (moves.some(move => move.toRank === kingPos.rank && move.toFile === kingPos.file)) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                
+                return false;
+            }
+            
+            getPseudoLegalMoves(rank, file, piece) {
+                // Get moves without checking for checks (to avoid infinite recursion)
+                switch (piece.type) {
+                    case 'p': return this.getPawnAttacks(rank, file, piece.color);
+                    case 'r': return this.getRookMoves(rank, file, piece.color);
+                    case 'n': return this.getKnightMoves(rank, file, piece.color);
+                    case 'b': return this.getBishopMoves(rank, file, piece.color);
+                    case 'q': return this.getQueenMoves(rank, file, piece.color);
+                    case 'k': return this.getBasicKingMoves(rank, file, piece.color);
+                    default: return [];
+                }
+            }
+            
+            getPawnAttacks(rank, file, color) {
+                const moves = [];
+                const direction = color === 'white' ? -1 : 1;
+                const newRank = rank + direction;
+                
+                if (newRank >= 0 && newRank < 8) {
+                    for (const fileOffset of [-1, 1]) {
+                        const newFile = file + fileOffset;
+                        if (newFile >= 0 && newFile < 8) {
+                            moves.push({ fromRank: rank, fromFile: file, toRank: newRank, toFile: newFile });
+                        }
+                    }
+                }
+                
+                return moves;
+            }
+            
+            getBasicKingMoves(rank, file, color) {
+                const moves = [];
+                const directions = [
+                    [-1, -1], [-1, 0], [-1, 1],
+                    [0, -1],           [0, 1],
+                    [1, -1],  [1, 0],  [1, 1]
+                ];
+                
+                for (const [rankOffset, fileOffset] of directions) {
+                    const newRank = rank + rankOffset;
+                    const newFile = file + fileOffset;
+                    
+                    if (newRank >= 0 && newRank < 8 && newFile >= 0 && newFile < 8) {
+                        moves.push({ fromRank: rank, fromFile: file, toRank: newRank, toFile: newFile });
+                    }
+                }
+                
+                return moves;
+            }
+            
+            findKing(color) {
+                for (let rank = 0; rank < 8; rank++) {
+                    for (let file = 0; file < 8; file++) {
+                        const piece = this.board[rank][file];
+                        if (piece && piece.type === 'k' && piece.color === color) {
+                            return { rank, file };
+                        }
+                    }
+                }
+                return null;
+            }
+            
+            updateGameStatus() {
+                // Check for checkmate or stalemate
+                const hasLegalMoves = this.hasLegalMoves(this.currentPlayer);
+                const inCheck = this.isInCheck(this.currentPlayer);
+                
+                if (!hasLegalMoves) {
+                    if (inCheck) {
+                        this.gameStatus = this.currentPlayer === 'white' ? 'black_wins' : 'white_wins';
+                    } else {
+                        this.gameStatus = 'stalemate';
+                    }
+                } else {
+                    this.gameStatus = 'active';
+                }
+            }
+            
+            hasLegalMoves(color) {
+                for (let rank = 0; rank < 8; rank++) {
+                    for (let file = 0; file < 8; file++) {
+                        const piece = this.board[rank][file];
+                        if (piece && piece.color === color) {
+                            const moves = this.getLegalMoves(rank, file);
+                            if (moves.length > 0) return true;
+                        }
+                    }
+                }
+                return false;
+            }
+            
+            undoMove() {
+                if (this.moveHistory.length === 0 || this.isThinking) return;
+                
+                const lastMove = this.moveHistory.pop();
+                
+                // Restore the piece
+                this.board[lastMove.fromRank][lastMove.fromFile] = lastMove.piece;
+                this.board[lastMove.toRank][lastMove.toFile] = lastMove.capturedPiece;
+                
+                // Handle castling undo
+                if (lastMove.piece.type === 'k' && Math.abs(lastMove.toFile - lastMove.fromFile) === 2) {
+                    const rookToFile = lastMove.toFile > lastMove.fromFile ? 7 : 0;
+                    const rookFromFile = lastMove.toFile > lastMove.fromFile ? 5 : 3;
+                    
+                    this.board[lastMove.fromRank][rookToFile] = this.board[lastMove.toRank][rookFromFile];
+                    this.board[lastMove.toRank][rookFromFile] = null;
+                }
+                
+                // Handle en passant undo
+                if (lastMove.piece.type === 'p' && !lastMove.capturedPiece && 
+                    lastMove.fromFile !== lastMove.toFile) {
+                    const capturedPawnRank = lastMove.piece.color === 'white' ? lastMove.toRank + 1 : lastMove.toRank - 1;
+                    this.board[capturedPawnRank][lastMove.toFile] = {
+                        type: 'p',
+                        color: lastMove.piece.color === 'white' ? 'black' : 'white'
+                    };
+                }
+                
+                this.currentPlayer = this.currentPlayer === 'white' ? 'black' : 'white';
+                this.lastMove = this.moveHistory.length > 0 ? this.moveHistory[this.moveHistory.length - 1] : null;
+                this.selectedSquare = null;
+                
+                // In bot mode, undo bot's move too
+                if (this.gameMode === 'bot' && this.currentPlayer === 'black' && this.moveHistory.length > 0) {
+                    setTimeout(() => this.undoMove(), 100);
+                }
+                
+                this.updateGameStatus();
+                this.renderBoard();
+                this.updateUI();
+            }
+            
+            flipBoard() {
+                this.isFlipped = !this.isFlipped;
+                this.renderBoard();
+            }
+            
+            setGameMode(mode) {
+                this.gameMode = mode;
+                this.newGame();
+            }
+            
+            newGame() {
+                this.board = this.createInitialBoard();
+                this.currentPlayer = 'white';
+                this.selectedSquare = null;
+                this.moveHistory = [];
+                this.gameStatus = 'active';
+                this.lastMove = null;
+                this.isThinking = false;
+                
+                document.getElementById('thinkingIndicator').classList.remove('active');
+                
+                this.renderBoard();
+                this.updateUI();
+            }
+            
+            updateUI() {
+                // Update mode indicator
+                document.getElementById('modeIndicator').textContent = 
+                    this.gameMode === 'bot' ? 'vs Bot' : 'Local 2P';
+                
+                // Update game status
+                let statusText = '';
+                let turnText = '';
+                
+                switch (this.gameStatus) {
+                    case 'active':
+                        statusText = 'Game in progress';
+                        turnText = `${this.currentPlayer.charAt(0).toUpperCase() + this.currentPlayer.slice(1)} to move`;
+                        break;
+                    case 'white_wins':
+                        statusText = 'White wins by checkmate!';
+                        turnText = 'Game over';
+                        break;
+                    case 'black_wins':
+                        statusText = 'Black wins by checkmate!';
+                        turnText = 'Game over';
+                        break;
+                    case 'stalemate':
+                        statusText = 'Game drawn by stalemate';
+                        turnText = 'Game over';
+                        break;
+                }
+                
+                document.getElementById('gameStatus').textContent = statusText;
+                document.getElementById('turnIndicator').textContent = turnText;
+                
+                // Update moves list
+                this.updateMovesList();
+                
+                // Update evaluation bar (simple implementation)
+                this.updateEvaluationBar();
+            }
+            
+            updateMovesList() {
+                const movesListElement = document.getElementById('movesList');
+                
+                if (this.moveHistory.length === 0) {
+                    movesListElement.innerHTML = '<div class="info-text">No moves yet</div>';
+                    return;
+                }
+                
+                let movesHTML = '';
+                for (let i = 0; i < this.moveHistory.length; i += 2) {
+                    const moveNumber = Math.floor(i / 2) + 1;
+                    const whiteMove = this.moveHistory[i];
+                    const blackMove = this.moveHistory[i + 1];
+                    
+                    const whiteMoveStr = this.moveToString(whiteMove);
+                    const blackMoveStr = blackMove ? this.moveToString(blackMove) : '';
+                    
+                    movesHTML += `
+                        <div class="move-pair">
+                            <span class="move-number">${moveNumber}.</span> 
+                            ${whiteMoveStr} ${blackMoveStr}
+                        </div>
+                    `;
+                }
+                
+                movesListElement.innerHTML = movesHTML;
+                movesListElement.scrollTop = movesListElement.scrollHeight;
+            }
+            
+            moveToString(move) {
+                if (!move) return '';
+                
+                const fromSquare = this.files[move.fromFile] + this.ranks[7 - move.fromRank];
+                const toSquare = this.files[move.toFile] + this.ranks[7 - move.toRank];
+                
+                let moveStr = '';
+                
+                if (move.piece.type === 'k' && Math.abs(move.toFile - move.fromFile) === 2) {
+                    // Castling
+                    moveStr = move.toFile > move.fromFile ? 'O-O' : 'O-O-O';
+                } else {
+                    // Regular move
+                    if (move.piece.type !== 'p') {
+                        moveStr += move.piece.type.toUpperCase();
+                    }
+                    
+                    if (move.capturedPiece) {
+                        if (move.piece.type === 'p') {
+                            moveStr += this.files[move.fromFile];
+                        }
+                        moveStr += 'x';
+                    }
+                    
+                    moveStr += toSquare;
+                    
+                    if (move.promotion) {
+                        moveStr += '=' + move.promotion.toUpperCase();
+                    }
+                }
+                
+                return moveStr;
+            }
+            
+            updateEvaluationBar() {
+                // Simple material evaluation
+                let whiteValue = 0;
+                let blackValue = 0;
+                
+                for (let rank = 0; rank < 8; rank++) {
+                    for (let file = 0; file < 8; file++) {
+                        const piece = this.board[rank][file];
+                        if (piece) {
+                            const value = this.pieceValues[piece.type];
+                            if (piece.color === 'white') {
+                                whiteValue += value;
+                            } else {
+                                blackValue += value;
+                            }
+                        }
+                    }
+                }
+                
+                const totalValue = whiteValue + blackValue;
+                const whiteAdvantage = whiteValue - blackValue;
+                const normalizedEval = whiteAdvantage / 1000; // Normalize to reasonable range
+                
+                // Convert to percentage for display
+                const percentage = Math.max(0, Math.min(100, 50 + (normalizedEval * 10)));
+                
+                document.getElementById('evalFill').style.height = `${percentage}%`;
+                document.getElementById('evalText').textContent = 
+                    normalizedEval > 0 ? `+${normalizedEval.toFixed(1)}` : normalizedEval.toFixed(1);
+            }
+        }
+        
+        // Initialize the game
+        // Document oxirida:
+        document.addEventListener('DOMContentLoaded', () => {
+            window.chessGame = new ChessGame();
+        });
+    </script>
+</body>
+</html>
