@@ -55,7 +55,7 @@
 1. **Clone the repository**
    ```bash
    git clone https://github.com/MuttaqiynDev/chess.git
-   cd chess-game
+   cd chess
    ```
 
 2. **Open the game**
