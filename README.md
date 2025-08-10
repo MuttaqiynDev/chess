@@ -1,7 +1,7 @@
-# 🏆 Advanced Chess Game
+# Advanced Chess Game
 
 <div align="center">
-  <h3>🚀 A Modern, Feature-Rich Chess Experience</h3>
+  <h3>A Modern, Feature-Rich Chess Experience</h3>
   
   ![Chess Game](https://img.shields.io/badge/Game-Chess-blue?style=for-the-badge&logo=chess.com)
   ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow?style=for-the-badge&logo=javascript)
@@ -28,30 +28,30 @@
 - ✅ **Move Validation** - Legal moves only
 - 🛡️ **Check & Checkmate** Detection
 
-### 🎨 **Modern UI/UX**
-- 🌙 **Dark Theme** - Easy on the eyes
-- 📱 **Fully Responsive** - Perfect on all devices
-- 💫 **Smooth Animations** - Fluid piece movements
-- 🎯 **Move Highlighting** - Visual feedback for possible moves
-- 📊 **Evaluation Bar** - Real-time position assessment
-- 📜 **Move History** - Track all moves with proper notation
+### **Modern UI/UX**
+- **Dark Theme** - Easy on the eyes
+- **Fully Responsive** - Perfect on all devices
+- **Smooth Animations** - Fluid piece movements
+- **Move Highlighting** - Visual feedback for possible moves
+- **Evaluation Bar** - Real-time position assessment
+- **Move History** - Track all moves with proper notation
 
-### 🔧 **Advanced Features**
-- ↩️ **Undo Function** - Take back moves
-- 🔄 **Board Flipping** - Change perspective
-- 💾 **Game State Management** - Persistent game state
-- 🧠 **AI Engine** - Minimax with alpha-beta pruning
-- ⚡ **Performance Optimized** - Smooth 60fps gameplay
+### **Advanced Features**
+- **Undo Function** - Take back moves
+- **Board Flipping** - Change perspective
+- **Game State Management** - Persistent game state
+- **AI Engine** - Minimax with alpha-beta pruning
+- **Performance Optimized** - Smooth 60fps gameplay
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
-### 📋 Prerequisites
+### Prerequisites
 - Any modern web browser (Chrome, Firefox, Safari, Edge)
 - No additional dependencies required!
 
-### 🎮 How to Play
+### How to Play
 1. **Clone the repository**
    ```bash
    git clone https://github.com/MuttaqiynDev/chess.git
@@ -71,7 +71,7 @@
 
 ---
 
-## 🎯 Game Controls
+## Game Controls
 
 | Action | Description |
 |--------|-------------|
@@ -85,25 +85,25 @@
 
 ---
 
-## 🤖 AI Features
+## AI Features
 
-### 🧠 **Intelligent Engine**
+### **Intelligent Engine**
 - **Minimax Algorithm** with Alpha-Beta Pruning
 - **Iterative Deepening** for optimal time management
 - **Position Evaluation** considering:
-  - 💰 Material value
-  - 🎯 Piece positioning
-  - 🏰 King safety
-  - 🌟 Center control
+  - Material value
+  - Piece positioning
+  - King safety
+  - Center control
 
-### ⚙️ **Customizable Difficulty**
+### **Customizable Difficulty**
 - Adjustable thinking time: 1-30 seconds
 - Dynamic evaluation with randomization for variety
 - Progressive difficulty scaling
 
 ---
 
-## 📱 Responsive Design
+## Responsive Design
 
 <div align="center">
   
@@ -117,7 +117,7 @@
 
 ---
 
-## 🛠️ Technical Stack
+## Technical Stack
 
 ```javascript
 const techStack = {
@@ -139,34 +139,34 @@ const techStack = {
 
 ---
 
-## 🎨 Screenshots
+## Screenshots
 
 <div align="center">
   
-### 🎮 Main Game Interface
+### Main Game Interface
 *Modern dark theme with intuitive controls*
 
-### 📱 Mobile Experience  
+### Mobile Experience  
 *Fully responsive design for all devices*
 
-### 🤖 AI vs Player
+### AI vs Player
 *Intelligent bot with visual thinking indicator*
 
 </div>
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Here's how you can help:
 
-1. **🍴 Fork the repository**
-2. **🌿 Create feature branch** (`git checkout -b feature/amazing-feature`)
-3. **💾 Commit changes** (`git commit -m 'Add amazing feature'`)
-4. **📤 Push to branch** (`git push origin feature/amazing-feature`)
-5. **🔄 Open Pull Request**
+1. **Fork the repository**
+2. **Create feature branch** (`git checkout -b feature/amazing-feature`)
+3. **Commit changes** (`git commit -m 'Add amazing feature'`)
+4. **Push to branch** (`git push origin feature/amazing-feature`)
+5. **Open Pull Request**
 
-### 📋 Development Guidelines
+### Development Guidelines
 - Follow existing code style
 - Add comments for complex logic
 - Test on multiple devices
@@ -174,45 +174,45 @@ We welcome contributions! Here's how you can help:
 
 ---
 
-## 📊 Performance Metrics
+## Performance Metrics
 
 ```
-🚀 Load Time: < 1 second
-⚡ Frame Rate: 60 FPS
-💾 Memory Usage: < 50MB
-📱 Mobile Score: 98/100
-🌐 Browser Support: 99%
+Load Time: < 1 second
+Frame Rate: 60 FPS
+Memory Usage: < 50MB
+Mobile Score: 98/100
+Browser Support: 99%
 ```
 
 ---
 
-## 🐛 Known Issues & Roadmap
+## Known Issues & Roadmap
 
-### 🔄 Current Issues
+### Current Issues
 - [ ] Add sound effects
 - [ ] Implement online multiplayer
 - [ ] Add game themes
 - [ ] Save/Load game functionality
 
-### 🛣️ Future Features
-- [ ] 🎵 Sound effects and music
-- [ ] 🌍 Online multiplayer mode  
-- [ ] 📚 Opening book for AI
-- [ ] 🏆 Tournament mode
-- [ ] 📈 Player statistics
-- [ ] 🎨 Multiple themes
+### Future Features
+- [ ] Sound effects and music
+- [ ] Online multiplayer mode  
+- [ ] Opening book for AI
+- [ ] Tournament mode
+- [ ] Player statistics
+- [ ] Multiple themes
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
-- ♟️ Chess piece designs from Wikimedia Commons
-- 🧠 AI algorithms based on classical chess programming techniques
-- 💡 Community feedback and suggestions
+- Chess piece designs from Wikimedia Commons
+- AI algorithms based on classical chess programming techniques
+- Community feedback and suggestions
 
 ---
 
-## 📞 Contact & Support
+## Contact & Support
 
 <div align="center">
   
@@ -226,6 +226,6 @@ We welcome contributions! Here's how you can help:
 ---
 
 <div align="center">
-  <h3>🎯 Ready to play? <a href="https://play-chesss.netlify.app/">Get Started!</a></h3>
+  <h3>Ready to play? <a href="https://play-chesss.netlify.app/">Get Started!</a></h3>
   <p><em>Experience the future of web-based chess gaming</em></p>
 </div>
