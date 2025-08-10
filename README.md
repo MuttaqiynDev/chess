@@ -226,6 +226,6 @@ We welcome contributions! Here's how you can help:
 ---
 
 <div align="center">
-  <h3>🎯 Ready to play? <a href="#quick-start">Get Started!</a></h3>
+  <h3>🎯 Ready to play? <a href="https://play-chesss.netlify.app/">Get Started!</a></h3>
   <p><em>Experience the future of web-based chess gaming</em></p>
 </div>
