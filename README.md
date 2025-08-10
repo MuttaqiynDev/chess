@@ -8,7 +8,7 @@
   ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
   ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
   
-  **[🎮 Play Live Demo]([https://github.com/MuttaqiynDev/chess](https://play-chesss.netlify.app/))** | **[📖 Documentation](#features)** | **[🐛 Report Bug](https://github.com/MuttaqiynDev/chess/issues)**
+  **[🎮 Play Live Demo]([https://github.com/MuttaqiynDev/chess])** | **[📖 Documentation](#features)** | **[🐛 Report Bug](https://github.com/MuttaqiynDev/chess/issues)**
 </div>
 
 ---
