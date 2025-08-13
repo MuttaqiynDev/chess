@@ -23,7 +23,6 @@
 ### 🏁 **Complete Chess Rules**
 - ♟️ **All Piece Movements** - Pawns, Rooks, Knights, Bishops, Queen, King
 - 🏰 **Castling** - Both kingside and queenside
-- ♟️ **En Passant** - Advanced pawn capture
 - 👑 **Pawn Promotion** - Choose your promotion piece
 - ✅ **Move Validation** - Legal moves only
 - 🛡️ **Check & Checkmate** Detection
