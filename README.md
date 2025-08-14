@@ -13,7 +13,7 @@
 
 ---
 
-## ✨ Features
+## Features
 
 ### **Game Modes**
 - **AI Opponent** - Intelligent bot with advanced algorithms
