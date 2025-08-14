@@ -15,10 +15,10 @@
 
 ## ✨ Features
 
-### 🎯 **Game Modes**
-- 🤖 **AI Opponent** - Intelligent bot with advanced algorithms
-- 👥 **Local Multiplayer** - Play with friends on the same device
-- ⚙️ **Customizable AI** - Adjustable thinking time (1-30 seconds)
+### **Game Modes**
+- **AI Opponent** - Intelligent bot with advanced algorithms
+- **Local Multiplayer** - Play with friends on the same device
+- **Customizable AI** - Adjustable thinking time (1-30 seconds)
 
 ### 🏁 **Complete Chess Rules**
 - ♟️ **All Piece Movements** - Pawns, Rooks, Knights, Bishops, Queen, King
