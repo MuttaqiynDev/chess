@@ -20,12 +20,12 @@
 - **Local Multiplayer** - Play with friends on the same device
 - **Customizable AI** - Adjustable thinking time (1-30 seconds)
 
-### 🏁 **Complete Chess Rules**
-- ♟️ **All Piece Movements** - Pawns, Rooks, Knights, Bishops, Queen, King
-- 🏰 **Castling** - Both kingside and queenside
-- 👑 **Pawn Promotion** - Choose your promotion piece
-- ✅ **Move Validation** - Legal moves only
-- 🛡️ **Check & Checkmate** Detection
+### **Complete Chess Rules**
+- **All Piece Movements** - Pawns, Rooks, Knights, Bishops, Queen, King
+- **Castling** - Both kingside and queenside
+- **Pawn Promotion** - Choose your promotion piece
+- **Move Validation** - Legal moves only
+- **Check & Checkmate** Detection
 
 ### **Modern UI/UX**
 - **Dark Theme** - Easy on the eyes
