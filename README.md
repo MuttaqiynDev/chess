@@ -102,20 +102,6 @@
 
 ---
 
-## Responsive Design
-
-<div align="center">
-  
-| Device | Screen Size | Status |
-|--------|-------------|---------|
-| 📱 Mobile | < 768px | ✅ Optimized |
-| 📟 Tablet | 768px - 1024px | ✅ Optimized |
-| 💻 Desktop | > 1024px | ✅ Optimized |
-
-</div>
-
----
-
 ## Screenshots
 
 <div align="center">
