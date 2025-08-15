@@ -116,28 +116,6 @@
 
 ---
 
-## Technical Stack
-
-```javascript
-const techStack = {
-  frontend: {
-    languages: ["HTML5", "CSS3", "JavaScript ES6+"],
-    features: ["CSS Grid", "Flexbox", "CSS Variables", "Responsive Design"],
-    animations: ["CSS Transitions", "Transform Effects", "Hover States"]
-  },
-  algorithms: {
-    ai: ["Minimax", "Alpha-Beta Pruning", "Position Evaluation"],
-    gameLogic: ["Move Validation", "Check Detection", "Castling Logic"]
-  },
-  performance: {
-    optimization: ["Efficient Rendering", "Memory Management", "Smooth Animations"],
-    compatibility: ["Cross-browser Support", "Mobile Optimization"]
-  }
-};
-```
-
----
-
 ## Screenshots
 
 <div align="center">
