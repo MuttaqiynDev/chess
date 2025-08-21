@@ -70,20 +70,6 @@
 
 ---
 
-## Game Controls
-
-| Action | Description |
-|--------|-------------|
-| **Click Piece** | Select piece to move |
-| **Click Square** | Move selected piece |
-| **New Game** | Start fresh game |
-| **Undo** | Take back last move |
-| **Flip Board** | Change board perspective |
-| **vs Bot** | Play against AI |
-| **Local 2P** | Play with friend |
-
----
-
 ## AI Features
 
 ### **Intelligent Engine**
