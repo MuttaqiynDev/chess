@@ -16,7 +16,7 @@
 ## Features
 
 ### **Game Modes**
-- **AI Opponent** - Intelligent bot with advanced algorithms
+- **AI Opponent** - Intelligent bot
 - **Local Multiplayer** - Play with friends on the same device
 - **Customizable AI** - Adjustable thinking time (1-30 seconds)
 
