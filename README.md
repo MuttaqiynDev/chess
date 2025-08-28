@@ -8,7 +8,7 @@
   ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
   ![CSS3](https://img.shields.io/badge/CSS3-purple?style=for-the-badge&logo=css3&logoColor=purple)
   
-  **[Play Live Demo](https://play-chesss.netlify.app/)** | **[Documentation](#features)** | **[Report Bug](https://github.com/MuttaqiynDev/chess/issues)**
+  **[Play Live Demo]((https://muttaqiyndev.github.io/chess/))** | **[Documentation](#features)** | **[Report Bug](https://github.com/MuttaqiynDev/chess/issues)**
 </div>
 
 ---
@@ -175,6 +175,6 @@ Browser Support: 99%
 ---
 
 <div align="center">
-  <h3>Ready to play? <a href="https://play-chesss.netlify.app/">Get Started!</a></h3>
+  <h3>Ready to play? <a href="(https://muttaqiyndev.github.io/chess/)">Get Started!</a></h3>
   <p><em>Experience the future of web-based chess gaming</em></p>
 </div>
