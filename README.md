@@ -175,6 +175,6 @@ Browser Support: 99%
 ---
 
 <div align="center">
-  <h3>Ready to play? <a href="(https://muttaqiyndev.github.io/chess/)">Get Started!</a></h3>
+  <h3>Ready to play? <a href="https://muttaqiyndev.github.io/chess/">Get Started!</a></h3>
   <p><em>Experience the future of web-based chess gaming</em></p>
 </div>
