@@ -8,7 +8,7 @@
   ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
   ![CSS3](https://img.shields.io/badge/CSS3-purple?style=for-the-badge&logo=css3&logoColor=purple)
   
-  **[Play Live Demo]((https://muttaqiyndev.github.io/chess/))** | **[Documentation](#features)** | **[Report Bug](https://github.com/MuttaqiynDev/chess/issues)**
+  **[Play Live Demo](https://muttaqiyndev.github.io/chess/)** | **[Documentation](#features)** | **[Report Bug](https://github.com/MuttaqiynDev/chess/issues)**
 </div>
 
 ---
