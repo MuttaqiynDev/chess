@@ -13,7 +13,7 @@ class ChessGame {
         this.isThinking = false;
         
         this.files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-        this.ranks = ['8', '7', '6', '5', '4', '3', '2', '1'];
+        this.ranks = ['1', '2', '3', '4', '5', '6', '7', '8'];
         
         this.pieceValues = {
             'p': 100, 'n': 320, 'b': 330, 'r': 500, 'q': 900, 'k': 20000
